@@ -1,15 +1,24 @@
-from aiogram.types import KeyboardButton, ReplyKeyboardRemove
+from aiogram.types import KeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 
-navigation_keyboard = ReplyKeyboardBuilder()
+def get_keyboard(
+        *btns: str,
+        placeholder: str = None,
+        request_contact: int = None,
+        sizes: tuple[int] = (2,),
+):
+    navigation_keyboard = ReplyKeyboardBuilder()
+    for index, text in enumerate(btns, start=0):
+        if request_contact and request_contact == index:
+            navigation_keyboard.add(
+                KeyboardButton(text=text, request_contact=True)
+            )
 
-navigation_keyboard.add(
-    KeyboardButton(text='Меню'),
-    KeyboardButton(text='О нас'),
-    KeyboardButton(text='Заказать доставку'),
-    KeyboardButton(text='Варианты оплаты'),
-)
-navigation_keyboard.adjust(2, 2)
+        else:
+            navigation_keyboard.add(KeyboardButton(text=text))
 
-hide_navigation_keyboard = ReplyKeyboardRemove()
+    return navigation_keyboard.adjust(*sizes).as_markup(
+        resize_keyboard=True,
+        input_field_placeholder=placeholder
+    )

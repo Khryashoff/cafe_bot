@@ -2,7 +2,7 @@ from aiogram import Router, F, types
 from aiogram.filters import Command, CommandStart, or_f
 from aiogram.utils.formatting import as_marked_section
 
-from keyboard.reply import navigation_keyboard
+from keyboard.reply import get_keyboard
 
 
 user_router = Router()
@@ -12,10 +12,14 @@ user_router = Router()
 async def bot_start(message: types.Message):
     await message.answer(
         text='Благодарю за обращение!',
-        reply_markup=navigation_keyboard.as_markup(
-            resize_keyboard=True,
-            input_field_placeholder='Что Вас интересует?'
-        )
+        reply_markup=get_keyboard(
+            'Меню',
+            'О нас',
+            'Заказать доставку',
+            'Варианты оплаты',
+            placeholder='Что Вас интересует?',
+            sizes=(2, 2)
+        ),
     )
 
 
